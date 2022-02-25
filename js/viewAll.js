@@ -1,10 +1,9 @@
-const search = function () {
-    const input = document.querySelector(".search-block > input"); // input сторики поиска
-    const searchBtn = document.querySelector(".search-block > button"); // Кнопка сторки поиска
+const getViewAll = function () {
+    const linkMore = document.querySelector(".more"); // Ссылка товар
 
-    // Отрисовка картинок
+    // Отрисовывка
     const renderGoods = (goods) => {
-        const goodsContainer = document.querySelector(".long-goods-list"); //Контейнер для карточек
+        const goodsContainer = document.querySelector(".long-goods-list");
 
         goodsContainer.innerHTML = ""; // Стираем содержимое контейнера
 
@@ -12,7 +11,6 @@ const search = function () {
         goods.forEach((good) => {
             const goodBlock = document.createElement("div"); // Блок карточки
 
-            // Классы
             goodBlock.classList.add("col-lg-3");
             goodBlock.classList.add("col-sm-6");
 
@@ -37,18 +35,13 @@ const search = function () {
         });
     };
 
-    // Обработчик данных
+    // Обработчик
     const getData = function (value) {
         fetch("/db/db.json")
             .then((res) => res.json())
             .then((data) => {
-                // Фильтр данных
-                const aray = data.filter((good) =>
-                    good.name.toLowerCase().includes(value.toLowerCase())
-                );
-
                 // Воозвращаем базу
-                localStorage.setItem("goods", JSON.stringify(aray));
+                localStorage.setItem("goods", JSON.stringify(data));
 
                 if (window.location.pathname !== "/goods.html") {
                     window.location.href = "/goods.html";
@@ -58,7 +51,6 @@ const search = function () {
             });
     };
 
-    // Отправка значения строки поиска
-    searchBtn.onclick = () => getData(input.value);
+    linkMore.onclick = () => getData(linkMore.textContent);
 };
-search();
+getViewAll();
